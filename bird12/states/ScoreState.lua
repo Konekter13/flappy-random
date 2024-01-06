@@ -9,13 +9,25 @@
 ]]
 
 ScoreState = Class{__includes = BaseState}
-
+medal = ""
 --[[
     When we enter the score state, we expect to receive the score
     from the play state so we know what to render to the State.
 ]]
 function ScoreState:enter(params)
     self.score = params.score
+end
+
+function ScoreState:giveMedal()
+    local medal = ""
+    if self.score >= 20 then
+        medal = "Gold Medal"
+    elseif self.score >= 10 then
+        medal = "Silver Medal"
+    else
+        medal = "Bronze Medal"
+    end
+    return medal
 end
 
 function ScoreState:update(dt)
@@ -32,6 +44,9 @@ function ScoreState:render()
 
     love.graphics.setFont(mediumFont)
     love.graphics.printf('Score: ' .. tostring(self.score), 0, 100, VIRTUAL_WIDTH, 'center')
+
+    local medal = self:giveMedal()
+    love.graphics.printf('You won a  ' .. medal, 0, 136, VIRTUAL_WIDTH, 'center')
 
     love.graphics.printf('Press Enter to Play Again!', 0, 160, VIRTUAL_WIDTH, 'center')
 end
