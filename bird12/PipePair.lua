@@ -11,24 +11,24 @@
 PipePair = Class{}
 
 -- size of the gap between pipes
--- local GAP_HEIGHT = 90
+local GAP_HEIGHT = 90
 
--- Zufälligen Abstand zwischen 60 und 120 generieren
-math.randomseed(os.time())  
+-- Zufälligen Abstand zwischen generieren
+-- math.randomseed(os.time())  
 
 -- Funktion, um zufälligen Abstand zu generieren
-local function generateRandomGapHeight()
-    return math.random(60, 200)
-end
+-- local function generateRandomGapHeight()
+--     return math.random(60, 200)
+-- end
 
 -- Verwende die generierte Höhe für den Abstand
-local GAP_HEIGHT = generateRandomGapHeight()
+-- local GAP_HEIGHT = generateRandomGapHeight()
 
 -- Hier wird der Abstand für jede neue Pipe generiert
-local function createNewPipe()
-    local gapHeight = generateRandomGapHeight()
+-- local function createNewPipe()
+--    local gapHeight = generateRandomGapHeight()
     -- Code zum Erstellen der Pipe mit dem generierten gapHeight
-end
+-- end
 
 function PipePair:init(y)
     -- flag to hold whether this pair has been scored (jumped through)
