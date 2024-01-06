@@ -17,6 +17,7 @@ PIPE_HEIGHT = 288
 BIRD_WIDTH = 38
 BIRD_HEIGHT = 24
 spawnrate = 2
+GAP_HEIGHT = 90
 
 math.randomseed(os.time())
 
@@ -37,13 +38,17 @@ function PlayState:update(dt)
     local function generatespawnrate()
         return math.random(1.5, 4)
     end
-    
+
+    local function generateRandomGapHeight()
+        return math.random(75, 130)
+    end
+
     if self.timer > spawnrate then
         -- modify the last Y coordinate we placed so pipe gaps aren't too far apart
         -- no higher than 10 pixels below the top edge of the screen,
         -- and no lower than a gap length (90 pixels) from the bottom
         local y = math.max(-PIPE_HEIGHT + 10, 
-            math.min(self.lastY + math.random(-20, 20), VIRTUAL_HEIGHT - 90 - PIPE_HEIGHT))
+            math.min(self.lastY + math.random(-20, 20), VIRTUAL_HEIGHT - GAP_HEIGHT - PIPE_HEIGHT))
         self.lastY = y
     
         -- add a new pipe pair at the end of the screen at our new Y
@@ -54,6 +59,7 @@ function PlayState:update(dt)
     
         -- generate a new spawnrate for the next iteration
         spawnrate = generatespawnrate()
+        GAP_HEIGHT = generateRandomGapHeight()
     end
 
     -- for every pair of pipes..
