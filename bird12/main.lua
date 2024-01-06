@@ -90,6 +90,7 @@ function love.load()
         ['explosion'] = love.audio.newSource('explosion.wav', 'static'),
         ['hurt'] = love.audio.newSource('hurt.wav', 'static'),
         ['score'] = love.audio.newSource('score.wav', 'static'),
+        ['pause'] = love.audio.newSource('pause.wav', 'static'),
 
         -- https://freesound.org/people/xsgianni/sounds/388079/
         ['music'] = love.audio.newSource('marios_way.mp3', 'static')
@@ -120,6 +121,9 @@ function love.load()
 
     -- initialize mouse input table
     love.mouse.buttonsPressed = {}
+
+    -- pause variable
+    gamePaused = false
 end
 
 function love.resize(w, h)
@@ -132,6 +136,18 @@ function love.keypressed(key)
 
     if key == 'escape' then
         love.event.quit()
+    end
+
+    if key == 'p' then
+        sounds['pause']:play()
+        if gamePaused then
+            gamePaused = false
+            sounds['music']:play()
+        else
+            gamePaused = true
+            sounds['music']:pause()
+            
+        end
     end
 end
 
@@ -155,15 +171,16 @@ function love.mouse.wasPressed(button)
 end
 
 function love.update(dt)
-    if scrolling then
-        backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
-        groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
+    if not gamePaused then
+        if scrolling then
+            backgroundScroll = (backgroundScroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
+            groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
+        end
+        gStateMachine:update(dt)
+
+        love.keyboard.keysPressed = {}
+        love.mouse.buttonsPressed = {}
     end
-
-    gStateMachine:update(dt)
-
-    love.keyboard.keysPressed = {}
-    love.mouse.buttonsPressed = {}
 end
 
 function love.draw()
@@ -173,5 +190,11 @@ function love.draw()
     gStateMachine:render()
     love.graphics.draw(ground, -groundScroll, VIRTUAL_HEIGHT - 16)
     
+    if gamePaused then
+        love.graphics.setFont(hugeFont)
+        love.graphics.printf('PAUSED', 0, 64, VIRTUAL_WIDTH, 'center')
+        love.graphics.setFont(mediumFont)
+        love.graphics.printf('click p to unpause' , 0, 200, VIRTUAL_WIDTH, 'center')
+    end
     push:finish()
 end
