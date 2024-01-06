@@ -24,11 +24,13 @@ end
 function ScoreState:giveMedal()
     local medal = ""
     if self.score >= 20 then
-        medal = "Gold Medal"
+        medal = "a Gold Medal"
     elseif self.score >= 10 then
-        medal = "Silver Medal"
+        medal = "a Silver Medal"
+    elseif self.score >= 5 then
+        medal = "a Bronze Medal"
     else
-        medal = "Bronze Medal"
+        medal = "an another try!"
     end
     return medal
 end
@@ -49,14 +51,16 @@ function ScoreState:render()
     love.graphics.printf('Score: ' .. tostring(self.score), 0, 100, VIRTUAL_WIDTH, 'center')
 
     local medal = self:giveMedal()
-    love.graphics.printf('You won a  ' .. medal, 0, 120, VIRTUAL_WIDTH, 'center')
+    love.graphics.printf('You won ' .. medal, 0, 120, VIRTUAL_WIDTH, 'center')
 
-    if medal == "Gold Medal" then
+    if medal == "a Gold Medal" then
         love.graphics.draw(gold, VIRTUAL_WIDTH/2-25, 140)
-    elseif medal == "Silver Medal" then
+    elseif medal == "a Silver Medal" then
         love.graphics.draw(silver, VIRTUAL_WIDTH/2-25, 140)
-    else
+    elseif medal == "a Bronze Medal" then
         love.graphics.draw(bronze,VIRTUAL_WIDTH/2-25, 140)
+    else 
+
     end
     
     love.graphics.printf('Press Enter to Play Again!', 0, 200, VIRTUAL_WIDTH, 'center')
